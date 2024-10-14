@@ -15,7 +15,7 @@ class Lecturer(Mentor):
     def average_rate(self):
         list_ = list(self.courses_rates.values())
         new_list = []
-        result = "-"
+        result = 0
         
         if list_:
             for el in list_:
@@ -25,9 +25,29 @@ class Lecturer(Mentor):
 
         return result
 
+    def __eq__(self, other):
+        if not isinstance(other, Lecturer):
+            raise TypeError("Operand must be of the same class")
+        else:
+            return self.average_rate() == other.average_rate()
+    
+
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            raise TypeError("Operand must be of the same class")
+        else:
+            return self.average_rate() < other.average_rate()
+    
+
+    def __gt__(self, other):
+        if not isinstance(other, Lecturer):
+            raise TypeError("Operand must be of the same class")
+        else:
+            return self.average_rate() > other.average_rate()
+
     def __str__(self):
         average_rate = '-'
-        average_rate if self.average_rate() == '-' else average_rate == round(self.average_rate(), 1)
+        average_rate if self.average_rate() == 0 else average_rate == round(self.average_rate(), 1)
         
         return f"Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {average_rate}"
         
@@ -72,7 +92,7 @@ class Student:
     def average_grade(self):
         list_ = list(self.grades.values())
         new_list = []
-        result = "-"
+        result = 0
         
         if list_:
             for el in list_:
@@ -82,12 +102,32 @@ class Student:
                     
         return result
     
+    def __eq__(self, other):
+        if not isinstance(other, Student):
+            raise TypeError("Operand must be of the same class")
+        else:
+            return self.average_grade() == other.average_grade()
+    
+
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            raise TypeError("Operand must be of the same class")
+        else:
+            return self.average_grade() < other.average_grade()
+    
+
+    def __gt__(self, other):
+        if not isinstance(other, Student):
+            raise TypeError("Operand must be of the same class")
+        else:
+            return self.average_grade() > other.average_grade()
+    
     def __str__(self):
         courses_in_progress = ', '.join(self.courses_in_progress)
         finished_courses = ', '.join(self.finished_courses)
         average_grade = '-'
 
-        average_grade if self.average_grade() == '-' else average_grade == round(self.average_grade(), 1)
+        average_grade if self.average_grade() == 0 else average_grade == round(self.average_grade(), 1)
 
         return f"Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {average_grade}\nКурсы в процессе изучения: {courses_in_progress}\nЗавершенные курсы: {finished_courses}"
     
@@ -140,37 +180,13 @@ print(best_student.__str__())
 print(average_student.average_grade())
 print(average_student.__str__())
 
+# print(average_lect == best_student)
+print(average_lect == top_lect)
+print(average_lect > top_lect)
+print(average_lect < top_lect)
 
-def students_average_grade(*students, course):
-    sum_ = 0
-    len_ = 0
+# print(best_student == average_lect)
+print(best_student == average_student)
+print(best_student > average_student)
+print(best_student < average_student)
 
-    for student in students:
-        if course in student.finished_courses:
-            if student.grades.get(course):
-                for grade in student.grades.get(course):
-                        sum_ += grade
-                        len_ += 1
-    avg = sum_ / len_
-        
-    return avg
-
-
-def lectors_average_rate(*lecturers, course):
-    sum_ = 0
-    len_ = 0
-
-    for lecturer in lecturers:
-        if course in lecturer.courses_attached:
-            if lecturer.courses_rates.get(course):
-                for rate in lecturer.courses_rates.get(course):
-                    sum_ += rate
-                    len_ += 1
-    avg = sum_ / len_
-        
-    return avg
-
-print(students_average_grade(best_student, average_student, course='Python'))
-print(students_average_grade(best_student, average_student, course='Java'))
-print(lectors_average_rate(top_lect, average_lect, course='Python'))
-print(lectors_average_rate(top_lect, average_lect, course='Java'))
